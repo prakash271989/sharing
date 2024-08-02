@@ -73,6 +73,6 @@ jobs:
 
 
      - name: Terraform Apply
-       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+       id: apply
        run: terraform apply -auto-approve -var "developer_name=${GITHUB_ACTOR}" -var "developer_email=${GITHUB_EMAIL}" -var "prefix=${PREFIX}"
 ####
