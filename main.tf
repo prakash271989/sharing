@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
 terraform {
   required_providers {
     aws = {
@@ -5,8 +9,16 @@ terraform {
       version = "~> 5.40"
     }
   }
-
   required_version = ">= 1.2.0"
+
+  backend "s3" {
+    bucket = "statefilestore"
+    dynamodb_table = "locktable"
+    key = "lambda/state/terraform.tfstate"
+    region = "us-east-1"
+    encrypt = true
+  }
+
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -50,4 +62,9 @@ resource "aws_lambda_function" "test_lambda" {
       email = var.developer_email
     }
   }
+
 }
+
+
+  
+
