@@ -28,12 +28,12 @@ resource "aws_s3_bucket_versioning" "versioning_example" {
 
 #DynamoDB Table
 resource "aws_dynamodb_table" "statelock" {
-  name           = "locktable"
-  billing_mode   = "PAY_PER_REQUEST"
-   hash_key       = "LockID"
+  name         = "locktable"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
 
-   attribute {
-     name = "LockID"
-     type = "S"
-   }
+  attribute {
+    name = "LockID"
+    type = "S"
   }
+}
