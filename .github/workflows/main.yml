@@ -69,7 +69,7 @@ jobs:
      - name: Terraform plan
        id: plan
      ####  if: github.event_name == 'pull_request'
-       run: terraform plan -auto-approve -var "developer_name=${GITHUB_ACTOR}" -var "developer_email=${GITHUB_EMAIL}" -var "prefix=${PREFIX}"
+       run: terraform plan -var "developer_name=${GITHUB_ACTOR}" -var "developer_email=${GITHUB_EMAIL}" -var "prefix=${PREFIX}"
        continue-on-error: true
 
 
@@ -112,5 +112,5 @@ jobs:
 
      - name: Terraform Apply
        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-       run: terraform apply -auto-approve -input=false
+       run: terraform apply -auto-approve -var "developer_name=${GITHUB_ACTOR}" -var "developer_email=${GITHUB_EMAIL}" -var "prefix=${PREFIX}"
 ####
