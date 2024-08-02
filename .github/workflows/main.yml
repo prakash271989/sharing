@@ -45,10 +45,33 @@ jobs:
        id: validate
        run: terraform validate
 
+     - name: Get GitHub Username
+       id: get_username
+       run: echo "GITHUB_ACTOR=${{ github.actor }}" >> $GITHUB_ENV
+
+     - name: Get GitHub Email
+       id: get_email
+       run: |
+         email=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+         https://api.github.com/users/${{ github.actor }} | jq -r '.email')
+         echo "GITHUB_EMAIL=$email" >> $GITHUB_ENV
+         
+     - name: Extract Prefix from Email
+       id: extract_prefix_email
+       run: |
+         if [ -n "$GITHUB_EMAIL" ]; then
+            PREFIX=$(echo $GITHUB_EMAIL | cut -d '@' -f 1)
+            echo "PREFIX=$PREFIX" >> $GITHUB_ENV
+          else
+            PREFIX=$(echo $GITHUB_ACTOR | cut -d '-' -f 1)
+            echo "PREFIX=$PREFIX" >> $GITHUB_ENV
+          fi
+
+
      - name: Terraform plan
        id: plan
      ####  if: github.event_name == 'pull_request'
-       run: terraform plan -no-color -input=false
+       run: terraform plan -auto-approve -var "developer_name=${GITHUB_ACTOR}" -var "developer_email=${GITHUB_EMAIL}" -var "prefix=${PREFIX}"
        continue-on-error: true
 
 
@@ -83,7 +106,8 @@ jobs:
              body: output
            })
 
- 
+		  
+         
 
      - name: Terraform Plan Status
        if: steps.plan.outcome == 'failure'
