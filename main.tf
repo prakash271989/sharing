@@ -50,4 +50,5 @@ resource "aws_lambda_function" "test_lambda" {
       email = var.developer_email
     }
   }
+
 }
