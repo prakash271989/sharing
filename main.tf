@@ -12,11 +12,11 @@ terraform {
   required_version = ">= 1.2.0"
 
   backend "s3" {
-    bucket = "statefilestore"
+    bucket         = "statefilestore"
     dynamodb_table = "locktable"
-    key = "lambda/state/terraform.tfstate"
-    region = "us-east-1"
-    encrypt = true
+    key            = "lambda/state/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
   }
 
 }
@@ -35,8 +35,8 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name               = "${var.prefix}iam_role_for_lambda"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  name                = "${var.prefix}iam_role_for_lambda"
+  assume_role_policy  = data.aws_iam_policy_document.assume_role.json
   managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
 }
 
@@ -59,12 +59,12 @@ resource "aws_lambda_function" "test_lambda" {
   environment {
     variables = {
       developer = var.developer_name
-      email = var.developer_email
+      email     = var.developer_email
     }
   }
 
 }
 
 
-  
+
 
