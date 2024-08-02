@@ -52,7 +52,7 @@ jobs:
      - name: Get GitHub Email
        id: get_email
        run: |
-         email=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+         email=$(curl -s -H "Authorization: token ${{ secrets.token }}" \
          https://api.github.com/users/${{ github.actor }} | jq -r '.email')
          echo "GITHUB_EMAIL=$email" >> $GITHUB_ENV
          
